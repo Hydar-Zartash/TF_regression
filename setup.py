@@ -14,8 +14,9 @@ class StockSetup():
         """Initialize the object by downloading stock data and performing several methods
         Args:
             ticker (string): the ticker to be downloaded and used
+            target (int): the required next month growth percentage
         """        
-        self.data = yf.download(ticker,start = "2002-11-02", end = "2021-08-28")
+        self.data = yf.download(ticker, period="max")
         self.target = target/100 + 1 #returns decimal value of int input (8% -> 1.08)
 
         self.RSI14()
@@ -27,7 +28,7 @@ class StockSetup():
 
         self.data = self.setup()
         self.data = self.data.dropna()
-        
+
 
 
     def RSI14(self) -> None:
@@ -91,7 +92,7 @@ class StockSetup():
             AROON
             Williams R%
             Bull-Bear indicator
-            boolean whether stock grows X% in the next thirty days
+            boolean whether stock grew X% in the next thirty days
         """        
         self.data['Shift'] = self.data['Adj Close'].shift(-30)
         self.data['Shift'] = self.data['Shift'].rolling(window=30).max()
